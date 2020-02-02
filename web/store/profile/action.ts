@@ -15,7 +15,7 @@ type ReceiveProfile = {
 
 type RequestUpdate = {
   type: 'PROFILE_REQUEST_UPDATE'
-  changes: { nickname?: string; role?: string }
+  changes: { nickname?: string; role?: string; description?: string }
 }
 
 type ReceiveUpdate = {

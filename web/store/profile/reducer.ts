@@ -21,7 +21,7 @@ export const reducer = createReducer<Action, 'profile'>('profile', {
   update: { loading: false },
 })
 
-reducer('PROFILE_REQUEST_PROFILE', { view: { loading: true } })
+reducer('PROFILE_REQUEST_PROFILE', { view: { loading: true, error: undefined } })
 
 reducer('PROFILE_RECEIVE_PROFILE', (_, action) => {
   return {

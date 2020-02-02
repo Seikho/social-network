@@ -8,6 +8,7 @@ import { Schema } from '../../../../srv/domain/profile/types'
 type Save = {
   nickname?: string
   role?: string
+  description?: string
 }
 
 export const ProfilePage = withState(
@@ -60,6 +61,7 @@ type ProfileProps = {
 const Profile: React.FunctionComponent<ProfileProps> = ({ profile, userId, onSave }) => {
   const [nick, setNick] = React.useState(profile?.nickname)
   const [role, setRole] = React.useState(profile?.settings?.role)
+  const [desc, setDesc] = React.useState(profile?.description)
   const [dirty, setDirty] = React.useState(false)
   const canSave = userId === profile.id
 
@@ -67,14 +69,16 @@ const Profile: React.FunctionComponent<ProfileProps> = ({ profile, userId, onSav
     const changes: Save = {}
     if (nick !== profile.nickname) changes.nickname = nick
     if (role !== profile.settings?.role) changes.role = role
+    if (desc !== profile.description) changes.description = desc
     onSave(changes)
   }
 
   React.useEffect(() => {
     if (nick !== profile.nickname) setDirty(true)
     else if (role !== profile.settings?.role) setDirty(true)
+    else if (desc !== profile.description) setDirty(true)
     else setDirty(false)
-  }, [nick, role])
+  }, [nick, role, desc, profile])
 
   const roles = Object.entries(Schema.Role).map(pair => pair[1])
 
@@ -86,6 +90,15 @@ const Profile: React.FunctionComponent<ProfileProps> = ({ profile, userId, onSav
           placeholder="Nickname..."
           value={nick}
           onChange={ev => setNick(ev.currentTarget.value)}
+        />
+      </Field>
+
+      <Field name="Description">
+        <input
+          type="text"
+          placeholder="Description..."
+          value={desc}
+          onChange={ev => setDesc(ev.currentTarget.value)}
         />
       </Field>
 

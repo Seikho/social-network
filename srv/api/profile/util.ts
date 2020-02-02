@@ -8,6 +8,7 @@ export function toDto(schema: Schema.Profile): API.Profile {
     created: new Date(schema.created),
     seen: new Date(schema.seen),
     status: schema.status ?? '',
+    description: schema.description,
     settings: JSON.parse(schema.settings as any),
   }
 }
