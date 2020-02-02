@@ -14,7 +14,9 @@ export default handle(async (req, res) => {
     throw new StatusError('Profile not found', 404)
   }
 
-  const dto = toDto(profile)
+  const follows = await profiles.relations.store.getUserFollows(id)
+
+  const dto = toDto(profile, follows)
   if (req.params.id) {
     delete dto.settings
   }

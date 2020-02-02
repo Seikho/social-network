@@ -2,7 +2,6 @@ import { profile } from './profile'
 import { update } from './update'
 import { createProfile, updateProfile } from './store'
 import { table, tables } from '../../db/client'
-import { sockets } from 'srv/api'
 
 const upd = update.handler('update-populator')
 const prf = profile.handler('profile-populator')
@@ -22,7 +21,6 @@ prf.handle('ProfileCreated', async (_, ev) => {
 
 upd.handle('NicknameUpdated', async (_, ev) => {
   await updateProfile(ev.userId, 'nickname', ev.name)
-  sockets
 })
 
 upd.handle('ProfileVerified', async (_, ev) => {

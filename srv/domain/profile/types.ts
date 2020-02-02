@@ -68,6 +68,8 @@ export namespace API {
     seen: Date
     status: string
     description?: string
+    followers: string[]
+    following: string[]
 
     settings?: Schema.Settings
   }
@@ -75,5 +77,6 @@ export namespace API {
   export type ProfileList = {
     id: string
     nickname?: string
+    description?: string
   }
 }

@@ -3,6 +3,7 @@ import { Action } from './action'
 import { API } from '../../../srv/domain/profile/types'
 
 export type State = {
+  user?: Profile
   view: {
     profile?: Profile
     loading: boolean
@@ -40,6 +41,36 @@ reducer('PROFILE_RECEIVE_UPDATE', (_, action) => {
     update: {
       loading: false,
       error: action.error,
+    },
+  }
+})
+
+reducer('PROFILE_RECEIVE_SELF', (_, action) => {
+  return {
+    user: action.profile,
+  }
+})
+
+reducer('PROFILE_RECEIVE_FOLLOW', ({ user }, { userId, error }) => {
+  if (error) return
+  if (!user) return
+
+  return {
+    user: {
+      ...user,
+      following: user.following.concat(userId),
+    },
+  }
+})
+
+reducer('PROFILE_RECEIVE_UNFOLLOW', ({ user }, { userId, error }) => {
+  if (error) return
+  if (!user) return
+
+  return {
+    user: {
+      ...user,
+      following: user.following.filter(id => id !== userId),
     },
   }
 })

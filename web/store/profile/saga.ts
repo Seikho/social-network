@@ -2,6 +2,17 @@ import { saga, get, post } from '../store'
 import { Profile } from './reducer'
 import { Schema } from 'srv/domain/profile/types'
 
+saga('PROFILE_REQUEST_SELF', async (_, dispatch) => {
+  const res = await get<{ profile: Profile }>(`/profile`)
+
+  if (res.status !== 200) {
+    dispatch({ type: 'PROFILE_RECEIVE_SELF', error: res.statusText })
+    return
+  }
+
+  dispatch({ type: 'PROFILE_RECEIVE_SELF', profile: res.data.profile })
+})
+
 saga('PROFILE_REQUEST_PROFILE', async ({ id }, dispatch) => {
   const requestId = id ? `/${id}` : ''
   const res = await get<{ profile: Profile }>(`/profile${requestId}`)
@@ -52,5 +63,33 @@ saga(
 )
 
 saga('USER_RECEIVE_LOGIN', async (_, dispatch) => {
-  dispatch({ type: 'PROFILE_REQUEST_PROFILE' })
+  dispatch({ type: 'PROFILE_REQUEST_SELF' })
+})
+
+saga('PROFILE_REQUEST_FOLLOW', async (action, dispatch) => {
+  const res = await post(`/profile/${action.userId}/follow`)
+  const userId = action.userId
+  const error = res.status > 200 ? res.data.message ?? res.statusText : undefined
+
+  if (error) {
+    dispatch({ type: 'NOTIFY_REQUEST', kind: 'error', text: `Failed to follow: ${error}` })
+  } else {
+    dispatch({ type: 'NOTIFY_REQUEST', kind: 'success', text: 'Followed user' })
+  }
+
+  dispatch({ type: 'PROFILE_RECEIVE_FOLLOW', userId, error })
+})
+
+saga('PROFILE_REQUEST_UNFOLLOW', async (action, dispatch) => {
+  const res = await post(`/profile/${action.userId}/unfollow`)
+  const userId = action.userId
+  const error = res.status > 200 ? res.data.message ?? res.statusText : undefined
+
+  if (error) {
+    dispatch({ type: 'NOTIFY_REQUEST', kind: 'error', text: `Failed to unfollow: ${error}` })
+  } else {
+    dispatch({ type: 'NOTIFY_REQUEST', kind: 'success', text: 'Unfollowed user' })
+  }
+
+  dispatch({ type: 'PROFILE_RECEIVE_UNFOLLOW', userId, error })
 })

@@ -33,5 +33,6 @@ function toProfileDTO(schema: Schema.Profile): API.ProfileList {
   return {
     id: schema.id,
     nickname: schema.nickname,
+    description: schema.description,
   }
 }

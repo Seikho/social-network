@@ -3,10 +3,12 @@ import * as React from 'react'
 import { withState } from '/store'
 import { SearchResult } from 'srv/domain/types'
 import { Link } from 'react-router-dom'
+import { Profile } from '/store/profile'
 
 type State = {
   result?: SearchResult
   loading: boolean
+  self?: Profile
 }
 
 type Props = {
@@ -14,6 +16,8 @@ type Props = {
     params?: { search?: string }
   }
 }
+
+type Follow = (type: 'follow' | 'unfollow', userId: string) => void
 
 export const SearchPage = withState<State, Props>(
   ({ search }) => ({ result: search.result, loading: search.loading }),
@@ -61,7 +65,9 @@ const Results = ({ search }: ResultProps) => {
   )
 }
 
-type ProfileProps = { profiles: SearchResult['profiles'] }
+type ProfileProps = {
+  profiles: SearchResult['profiles']
+}
 
 const Profiles = ({ profiles }: ProfileProps) => {
   if (!profiles.length) {
@@ -75,7 +81,10 @@ const Profiles = ({ profiles }: ProfileProps) => {
           <div className="search-page__head">
             <Link to={`/posts/${profile.id}`}>@{profile.nickname || profile.id}</Link>
           </div>
-          <div className="search-page__body">profile description</div>
+          <div className="search-page__body">{profile.description ?? 'No description'}</div>
+          <div className="search-page__footer">
+            <Follow userId={profile.id} />
+          </div>
         </div>
       ))}
     </div>
@@ -111,6 +120,47 @@ const Post = ({ post }: PostProps) => {
       </div>
 
       <div className="search-page__body">{post.content}</div>
+      <div className="search-page__footer">
+        <Follow userId={post.userId} />
+      </div>
     </div>
   )
 }
+
+type FollowState = {
+  selfId?: string
+  following: string[]
+}
+
+type FollowProps = {
+  userId: string
+}
+
+const Follow = withState<FollowState, FollowProps>(
+  ({ profile }) => ({ selfId: profile.user?.id, following: profile.user?.following ?? [] }),
+  ({ selfId, dispatch, following, userId }) => {
+    const isFollowing = following.includes(userId)
+    const isSelf = userId === selfId
+
+    const follow: Follow = (type, userId) => {
+      if (type === 'follow') dispatch({ type: 'PROFILE_REQUEST_FOLLOW', userId })
+      if (type === 'unfollow') dispatch({ type: 'PROFILE_REQUEST_UNFOLLOW', userId })
+    }
+
+    if (isSelf) return null
+
+    if (isFollowing) {
+      return (
+        <button className="button light small" onClick={() => follow('unfollow', userId)}>
+          Unfollow
+        </button>
+      )
+    }
+
+    return (
+      <button className="button light small" onClick={() => follow('follow', userId)}>
+        Follow
+      </button>
+    )
+  }
+)

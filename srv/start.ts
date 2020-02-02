@@ -11,13 +11,15 @@ export async function start() {
     await startApi()
     startPopulators()
     logger.info('service ready')
-  } catch (ex) {
-    logger.error({ ex }, `failed to start service`)
+  } catch (err) {
+    logger.error({ err }, `failed to start service`)
   }
 }
 
 function startPopulators() {
   profiles.populators.profile.start()
   profiles.populators.update.start()
+  profiles.relations.manager.start()
+  profiles.relations.populator.start()
   posts.populator.start()
 }
