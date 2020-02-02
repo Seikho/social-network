@@ -1,0 +1,45 @@
+@import '/styles.scss';
+
+.profile {
+  padding: 16px;
+  @include mobile {
+    padding: 8px;
+  }
+
+  &__head {
+    height: 48px;
+    background-color: $color-feature;
+    display: flex;
+    padding: 0 24px;
+    align-items: center;
+  }
+
+  &__body {
+    background-color: $color-secondary;
+    border: 1px solid $color-tertiary;
+    padding: 16px 24px;
+    display: grid;
+    grid-gap: 16px;
+
+    @include mobile {
+      grid-gap: 8px;
+    }
+
+    .profile__row {
+      display: flex;
+      align-items: center;
+
+      .profile__field {
+        width: 120px;
+      }
+
+      select {
+        min-width: 120px;
+      }
+
+      button {
+        width: 80px;
+      }
+    }
+  }
+}

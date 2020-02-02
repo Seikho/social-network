@@ -16,9 +16,17 @@ export async function migrate() {
 
   await evtMigrate({
     bookmarks: 'bookmarks',
-    events: 'events',
     client: db,
   })
 
+  for (const table of eventTables) {
+    await evtMigrate({
+      client: db,
+      events: table,
+    })
+  }
+
   logger.info(`successfully ensured event store schema`)
 }
+
+const eventTables = ['events', 'profile_events', 'post_events']

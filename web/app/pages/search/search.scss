@@ -1,0 +1,72 @@
+@import '/styles.scss';
+
+.search-page {
+  padding: 16px;
+
+  &__body {
+    display: grid;
+    grid-template-columns: 100%;
+    grid-gap: 16px;
+
+    .search-page__ribbon {
+      width: 100%;
+      background-color: $color-feature;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .search-page__profiles {
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, 200px);
+      grid-gap: 8px;
+
+      .search-page__profile {
+        background-color: $color-secondary;
+        height: 120px;
+
+        .search-page__head {
+          background-color: $color-feature;
+          padding: 0 8px;
+          display: flex;
+          height: 32px;
+          align-items: center;
+        }
+
+        .search-page__body {
+          padding: 8px;
+        }
+      }
+    }
+
+    .search-page__posts {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, 200px);
+      grid-gap: 8px;
+
+      .search-page__post {
+        .search-page__head {
+          font-size: 12px;
+          font-weight: 600;
+          padding: 0 8px;
+          height: 32px;
+          background-color: $color-feature;
+          display: flex;
+          align-items: center;
+          display: flex;
+          justify-content: space-between;
+        }
+
+        .search-page__body {
+          background-color: $color-secondary;
+          padding: 8px;
+          font-size: 12px;
+        }
+      }
+    }
+  }
+}

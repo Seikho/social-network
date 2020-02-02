@@ -1,16 +1,5 @@
-import './env'
-import { migrate } from './db'
-import { start } from './api'
-import { logger } from 'svcready'
+import { start } from './start'
 
-async function init() {
-  try {
-    await migrate()
-    await start()
-    logger.info('service ready')
-  } catch (ex) {
-    logger.error({ ex }, `failed to start service`)
-  }
-}
+start()
 
-init()
+process.on('unhandledRejection', err => console.error(err))

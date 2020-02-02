@@ -1,3 +1,3 @@
 export { db } from './client'
-export { auth } from './auth'
+export { auth, getUser } from './auth'
 export { migrate } from './migrate'

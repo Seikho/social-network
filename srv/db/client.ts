@@ -1,6 +1,7 @@
 import '../env'
 import * as knex from 'knex'
 import { env } from '../env'
+import { Schema as Profile } from '../domain/profile'
 
 export type Client = knex
 
@@ -15,12 +16,15 @@ export namespace Schema {
     user_id: string
     hash: string
   }
-
-  export interface Token {
-    user_id: string
-    token: string
-  }
 }
 
-export const users = <T = Schema.User>() => db.table<Schema.User, T>('users')
-export const tokens = <T = Schema.Token>() => db.table<Schema.Token, T>('tokens')
+export const tables = {
+  profile: 'profile',
+  users: 'users',
+}
+
+export const table = {
+  raw: db.raw.bind(db),
+  users: <T = Schema.User>() => db.table<Schema.User, T>(tables.users),
+  profile: <T = Profile.Profile>() => db.table<Profile.Profile, T>(tables.profile),
+}

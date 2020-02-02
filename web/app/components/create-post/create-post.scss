@@ -1,0 +1,43 @@
+.post-modal {
+  &__buttons {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__options {
+    display: grid;
+    justify-content: flex-end;
+    grid-gap: 8px;
+  }
+
+  &__thumbs {
+    display: grid;
+    justify-content: center;
+    padding: 8px;
+    grid-gap: 8px;
+    grid-template-columns: repeat(auto-fit, 48px);
+
+    .post-modal__thumb {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: black;
+
+      > img {
+        object-fit: contain;
+        width: 48px;
+        height: 48px;
+      }
+    }
+  }
+
+  textarea {
+    width: 100%;
+    max-width: 100%;
+    height: 160px;
+    min-height: 160px;
+    max-height: 160px;
+    padding: 4px;
+    font-size: 10px;
+  }
+}

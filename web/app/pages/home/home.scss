@@ -1,0 +1,24 @@
+@import '/styles.scss';
+
+.home {
+  display: flex;
+  padding: 16px;
+
+  &__buttons {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__body {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  &__posts {
+    width: 100%;
+    padding-top: 16px;
+  }
+}

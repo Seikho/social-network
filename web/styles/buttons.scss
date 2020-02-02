@@ -1,0 +1,54 @@
+@import './colors';
+
+label {
+  &.button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    padding: 0 8px;
+  }
+}
+
+.button {
+  height: 40px;
+  color: white;
+  border: 1px solid $color-primary;
+  background-color: $color-primary;
+  outline: none;
+  font-weight: 600;
+  cursor: pointer;
+
+  &.small {
+    height: 28px;
+    font-size: 10px;
+  }
+
+  &.light {
+    border: 1px solid $color-featureDark;
+    background-color: $color-feature;
+    color: white;
+
+    &:hover {
+      background-color: $color-featureLight;
+    }
+
+    &:disabled {
+      color: $color-featureDark;
+      background-color: $color-feature;
+    }
+  }
+
+  &.full {
+    width: 100%;
+  }
+
+  &:disabled {
+    color: $color-secondary;
+    cursor: not-allowed;
+  }
+
+  &:hover {
+    background-color: lighten($color-primary, 5%);
+  }
+}

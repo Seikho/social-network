@@ -4,3 +4,8 @@ node_modules
 *.db
 *.map
 .env
+*.jsx
+.cache
+dist
+assets/
+!assets/.gitkeep

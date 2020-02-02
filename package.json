@@ -1,10 +1,10 @@
 {
-  "name": "beam",
+  "name": "network",
   "version": "1.0.0",
   "description": "",
-  "main": "build/src/index.js",
+  "main": "build/srv/index.js",
   "scripts": {
-    "serve": "parcel watch web/index.html",
+    "serve": "parcel web/index.html",
     "start": "node build/srv/index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "clean": "rimraf build"
@@ -21,13 +21,16 @@
   },
   "homepage": "https://github.com/seikho/beam#readme",
   "devDependencies": {
+    "@types/axios": "^0.14.0",
+    "@types/cors": "^2.8.6",
+    "@types/multiparty": "^0.0.32",
     "@types/node": "^13.1.6",
     "@types/react": "^16.9.17",
     "@types/react-dom": "^16.9.4",
     "@types/react-redux": "^7.1.5",
     "@types/react-router-dom": "^5.1.3",
     "@types/redux": "^3.6.0",
-    "@types/redux-router": "^1.0.45",
+    "axois": "^0.0.1-security",
     "parcel-bundler": "^1.12.4",
     "prettier": "^1.19.1",
     "react": "^16.12.0",
@@ -36,16 +39,20 @@
     "react-router": "^5.1.2",
     "react-router-dom": "^5.1.2",
     "redux": "^4.0.5",
+    "redux-devtools-extension": "^2.13.8",
     "rimraf": "^3.0.0",
     "sass": "^1.24.4",
-    "typedstate": "^0.2.4",
-    "typescript": "^3.7.4"
+    "typedstate": "^0.2.5",
+    "typescript": "^3.7.5"
   },
   "dependencies": {
+    "babel-polyfill": "^6.26.0",
+    "cors": "^2.8.5",
     "dotenv": "^8.2.0",
-    "evtstore": "^1.2.2",
+    "evtstore": "^2.2.1",
     "knex": "^0.20.7",
+    "multiparty": "^4.2.1",
     "sqlite3": "^4.1.1",
-    "svcready": "../svcready"
+    "svcready": "^0.5.1"
   }
 }

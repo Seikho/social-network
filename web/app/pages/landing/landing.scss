@@ -1,0 +1,57 @@
+@import '/styles.scss';
+
+.landing {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &__box {
+    padding: 32px;
+    width: 300px;
+
+    .landing__header {
+      background-color: $color-primary;
+      display: flex;
+      height: 44px;
+      align-items: center;
+      justify-content: space-around;
+      font-weight: 600;
+
+      .landing__link {
+        display: flex;
+        justify-content: center;
+        width: 40%;
+        cursor: pointer;
+
+        &--active {
+          border-bottom: 2px solid green;
+        }
+      }
+
+      .landing__link--active {
+      }
+    }
+
+    .landing__body {
+      background-color: $color-secondary;
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-gap: 16px;
+      padding: 16px;
+
+      .landing__field {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        &--hide {
+          visibility: hidden;
+        }
+
+        &--error {
+          color: red;
+        }
+      }
+    }
+  }
+}

@@ -9,7 +9,11 @@
     "noFallthroughCasesInSwitch": true /* Report errors for fallthrough cases in switch statement. */,
     "inlineSourceMap": true /* Emit a single file with source maps instead of having a separate file. */,
     "outDir": "build",
-    "jsx": "preserve",
-    "forceConsistentCasingInFileNames": true /* Disallow inconsistently-cased references to the same file. */
+    "jsx": "react",
+    "forceConsistentCasingInFileNames": true /* Disallow inconsistently-cased references to the same file. */,
+    "baseUrl": ".",
+    "paths": {
+      "/*": ["web/*"]
+    }
   }
 }
