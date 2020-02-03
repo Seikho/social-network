@@ -1,5 +1,5 @@
 import { createDomain, CommandError, MemoryBookmark } from 'evtstore'
-import { getProvider } from '../provider'
+import { getProvider } from '../../provider'
 
 export type FollowModel = {
   userId: string
@@ -15,7 +15,7 @@ type Command =
   | { type: 'FollowUser'; fromUserId: string; toUserId: string }
   | { type: 'UnfollowUser'; fromUserId: string; toUserId: string }
 
-type Event =
+export type FollowEvent =
   | { type: 'FollowedUser'; fromUserId: string; toUserId: string }
   | { type: 'UnfollowedUser'; fromUserId: string; toUserId: string }
 
@@ -23,7 +23,7 @@ type Aggregate = {
   following: boolean
 }
 
-const { command, handler } = createDomain<Event, Aggregate, Command>(
+const { command, handler } = createDomain<FollowEvent, Aggregate, Command>(
   {
     stream: 'profile-follow',
     provider: getProvider('profile_events'),

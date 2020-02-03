@@ -1,3 +1,5 @@
+import { Relation } from './relation/types'
+
 export namespace Schema {
   export interface Profile {
     id: string
@@ -15,19 +17,6 @@ export namespace Schema {
 
   export interface Settings {
     visibility: 'online' | 'offline'
-  }
-
-  export enum Relation {
-    Friend = 'friend',
-    Partner = 'partner',
-    Sibling = 'sibling',
-    Parent = 'parent',
-    Child = 'child',
-    Brother = 'brother',
-    Sister = 'sister',
-    Father = 'father',
-    Mother = 'mother',
-    NotSet = 'notset',
   }
 }
 
@@ -65,6 +54,18 @@ export namespace API {
     following: string[]
 
     settings?: Schema.Settings
+  }
+
+  export type PostProfile = {
+    id: string
+    nickname: string
+    created: Date
+    seen: Date
+    status: string
+    description?: string
+    following: boolean
+    followedBy: boolean
+    relate?: { from: Relation; to: Relation }
   }
 
   export type ProfileList = {

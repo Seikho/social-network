@@ -1,5 +1,6 @@
 import { createReducer, saga, upload, get, post } from '../store'
 import { PostModel } from 'srv/domain/post/types'
+import { Profile } from '../profile'
 
 export type State = {
   modal: {
@@ -27,7 +28,7 @@ export type Action =
   | { type: 'POST_RECEIVE_CREATE'; error?: string }
   | { type: 'POST_CLOSE_MODAL' }
   | { type: 'POST_REQUEST_POSTS'; page?: number; userId?: string; clear?: boolean }
-  | { type: 'POST_RECEIVE_POSTS'; error?: string; posts?: PostModel[] }
+  | { type: 'POST_RECEIVE_POSTS'; error?: string; posts?: PostModel[]; profile?: Profile }
   | { type: 'POST_REQUEST_POST'; id: string }
   | { type: 'POST_RECEIVE_POST'; error?: string; post?: PostModel }
   | { type: 'POST_REQUEST_HIDE'; id: string }
@@ -146,14 +147,19 @@ saga('POST_REQUEST_POST', async (action, dispatch) => {
   dispatch({ type: 'POST_RECEIVE_POST', post: res.data.post })
 })
 
-saga('POST_REQUEST_POSTS', async ({ userId }, dispatch) => {
-  const id = userId ? `${userId}/posts` : ''
-  const res = await get(`/post/${id}`)
+saga('POST_REQUEST_POSTS', async ({ userId }, dispatch, { user }) => {
+  if (!user.userId) {
+    dispatch({ type: 'NOTIFY_REQUEST', kind: 'error', text: 'Not logged in' })
+    return
+  }
+
+  const id = userId ?? user.userId
+  const res = await get(`/post/${id}/posts`)
   if (res.status > 200) {
     dispatch({ type: 'POST_RECEIVE_POSTS', error: res.data.message })
     return
   }
-  dispatch({ type: 'POST_RECEIVE_POSTS', posts: res.data.posts })
+  dispatch({ type: 'POST_RECEIVE_POSTS', posts: res.data.posts, profile: res.data.profile })
 })
 
 saga('POST_REQUEST_HIDE', async (action, dispatch) => {
