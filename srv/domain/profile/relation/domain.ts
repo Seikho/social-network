@@ -1,6 +1,5 @@
 import { createDomain, CommandError } from 'evtstore'
 import { getProvider } from '../../provider'
-import { getUserState } from './state'
 import { Schema } from '../types'
 
 /**
@@ -11,16 +10,20 @@ import { Schema } from '../types'
  * - chat requests
  */
 
-type Event =
-  | { type: 'FollowedUser'; fromUserId: string; toUserId: string }
-  | { type: 'UnfollowedUser'; fromUserId: string; toUserId: string }
+type Event = { type: 'RelationAccepted'; left: Relate; right: Relate } | { type: '' }
 
-type Aggregate = {}
+type Aggregate = {
+  active: boolean
+  left: Relate
+  right: Relate
+}
+
+type Relate = {
+  userId: string
+  relation: Schema.Relation
+}
 
 type Command =
-  | { type: 'FollowUser'; fromUserId: string; toUserId: string }
-  | { type: 'UnfollowUser'; fromUserId: string; toUserId: string }
-
   /**
    * user-a    <----> user-b
    * [brother] <----> [sister]
@@ -29,47 +32,41 @@ type Command =
    */
   | {
       type: 'RequestRelation'
-      left: { userId: string; relation: Schema.Relation }
-      right: { userId: string; relation: Schema.Relation }
+      left: Relate
+      right: Relate
     }
   | { type: 'RejectRelation' }
   | { type: 'AcceptRelation'; relation: Schema.Relation }
   | { type: 'RemoveRelation' }
   | {
       type: 'UpdateRelation'
-      left?: { userId: string; relation: Schema.Relation }
-      right?: { userId: string; relation: Schema.Relation }
+      left?: Relate
+      right?: Relate
     }
 
 export const relation = createDomain<Event, Aggregate, Command>(
   {
     stream: 'profile-relation',
     provider: getProvider('profile_events'),
-    aggregate: () => ({}),
+    aggregate: () => ({
+      active: false,
+      left: { userId: '', relation: Schema.Relation.NotSet },
+      right: { userId: '', relation: Schema.Relation.NotSet },
+    }),
     fold: () => ({}),
   },
   {
-    async FollowUser(cmd) {
-      const user = await getUserState(cmd.fromUserId)
-
-      const isFollowing = user.following.includes(cmd.toUserId)
-      if (isFollowing) throw new CommandError('Already following user')
-
-      return { type: 'FollowedUser', toUserId: cmd.toUserId, fromUserId: cmd.fromUserId }
+    // aggregate = left-id--right-id
+    async RequestRelation(cmd, agg) {
+      if (agg.version !== 0) throw new Error()
     },
-    async UnfollowUser(cmd) {
-      const user = await getUserState(cmd.fromUserId)
-
-      const isFollowing = user.following.includes(cmd.toUserId)
-      if (!isFollowing) throw new CommandError('Not following user')
-
-      return { type: 'UnfollowedUser', toUserId: cmd.toUserId, fromUserId: cmd.fromUserId }
-    },
-
-    async RequestRelation(cmd) {},
     async AcceptRelation(cmd) {},
     async RejectRelation(cmd) {},
     async RemoveRelation(cmd) {},
     async UpdateRelation(cmd) {},
   }
 )
+
+type AggId = string
+
+const state = new Map<AggId, { id: string; left: Relate; right: Relate }>()

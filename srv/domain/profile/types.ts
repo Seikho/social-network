@@ -27,6 +27,7 @@ export namespace Schema {
     Sister = 'sister',
     Father = 'father',
     Mother = 'mother',
+    NotSet = 'notset',
   }
 }
 

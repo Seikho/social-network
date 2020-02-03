@@ -1,4 +1,3 @@
-import { v4 } from 'uuid'
 import { handle, StatusError } from 'svcready'
 import { profiles } from '../../domain/profile'
 
@@ -9,7 +8,9 @@ export const follow = handle(async (req, res) => {
   const toUserId = req.params.id
   if (!toUserId) throw new StatusError('No follow id provided', 400)
 
-  await profiles.relations.cmd.FollowUser(v4(), { fromUserId, toUserId })
+  const id = `${fromUserId}--${toUserId}`
+
+  await profiles.follow.cmd.FollowUser(id, { fromUserId, toUserId })
   res.json({ message: 'ok' })
 })
 
@@ -20,6 +21,8 @@ export const unfollow = handle(async (req, res) => {
   const toUserId = req.params.id
   if (!toUserId) throw new StatusError('No unfollow id provided', 400)
 
-  await profiles.relations.cmd.UnfollowUser(v4(), { fromUserId, toUserId })
+  const id = `${fromUserId}--${toUserId}`
+
+  await profiles.follow.cmd.UnfollowUser(id, { fromUserId, toUserId })
   res.json({ message: 'ok' })
 })

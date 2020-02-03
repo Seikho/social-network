@@ -1,6 +1,6 @@
 import { Schema } from '../../domain/profile'
 import { API } from '../../domain/profile/types'
-import { FollowModel } from 'srv/domain/profile/relation'
+import { FollowModel } from '../../domain/profile/follow'
 
 export function toDto(schema: Schema.Profile, follows: FollowModel): API.Profile {
   return {

@@ -5,9 +5,16 @@ import { getUser } from '../../db/auth'
 
 export const profile = createDomain<Domain.Event, Domain.Aggregate, Domain.Command>(
   {
-    aggregate: () => ({ userId: '', nickname: '', verified: true, description: '' }),
     stream: 'profile',
-    fold: (ev, _) => {
+    provider: getProvider<Domain.Event>('profile_events'),
+    aggregate: () => ({
+      following: false,
+      userId: '',
+      nickname: '',
+      verified: true,
+      description: '',
+    }),
+    fold: ev => {
       switch (ev.type) {
         case 'ProfileCreated':
           return { userId: ev.userId }
@@ -22,7 +29,6 @@ export const profile = createDomain<Domain.Event, Domain.Aggregate, Domain.Comma
           return { verified: ev.verify }
       }
     },
-    provider: getProvider<Domain.Event>('profile_events'),
   },
   {
     async Create(cmd, agg) {

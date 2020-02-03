@@ -1,4 +1,4 @@
-import { profile } from './domain'
+import { profile } from './profile'
 import { createProfile, updateProfile } from './store'
 
 export { prf as populator }

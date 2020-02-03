@@ -1,7 +1,8 @@
-import { profile } from './domain'
+import { profile } from './profile'
 import { populator } from './populate'
 import { Domain, Schema } from './types'
 import { relations } from './relation'
+import { follow } from './follow'
 import * as store from './store'
 
 export const profiles = {
@@ -9,6 +10,7 @@ export const profiles = {
   populator,
   store,
   relations,
+  follow,
 }
 
 export { Domain, Schema }

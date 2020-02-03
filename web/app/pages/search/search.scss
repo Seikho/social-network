@@ -11,7 +11,7 @@
     .search-page__ribbon {
       width: 100%;
       background-color: $color-feature;
-      height: 40px;
+      height: 32px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -22,14 +22,14 @@
     .search-page__profiles {
       width: 100%;
       display: grid;
-      grid-template-columns: repeat(auto-fit, 200px);
+      grid-template-columns: repeat(auto-fit, 240px);
       grid-gap: 8px;
 
       .search-page__profile {
         background-color: $color-secondary;
 
         .search-page__head {
-          background-color: $color-feature;
+          background-color: $color-featureDark;
           padding: 0 8px;
           display: flex;
           height: 32px;
@@ -63,7 +63,7 @@
           font-weight: 600;
           padding: 0 8px;
           height: 32px;
-          background-color: $color-feature;
+          background-color: $color-featureDark;
           display: flex;
           align-items: center;
           display: flex;
