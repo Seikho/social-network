@@ -3,7 +3,6 @@ import * as React from 'react'
 import { withState } from '../../../store'
 import { useParams } from 'react-router'
 import { Profile } from '../../../store/profile'
-import { Schema } from '../../../../srv/domain/profile/types'
 
 type Save = {
   nickname?: string
@@ -60,7 +59,6 @@ type ProfileProps = {
 
 const Profile: React.FunctionComponent<ProfileProps> = ({ profile, userId, onSave }) => {
   const [nick, setNick] = React.useState(profile?.nickname)
-  const [role, setRole] = React.useState(profile?.settings?.role)
   const [desc, setDesc] = React.useState(profile?.description)
   const [dirty, setDirty] = React.useState(false)
   const canSave = userId === profile.id
@@ -68,19 +66,15 @@ const Profile: React.FunctionComponent<ProfileProps> = ({ profile, userId, onSav
   const onClick = () => {
     const changes: Save = {}
     if (nick !== profile.nickname) changes.nickname = nick
-    if (role !== profile.settings?.role) changes.role = role
     if (desc !== profile.description) changes.description = desc
     onSave(changes)
   }
 
   React.useEffect(() => {
     if (nick !== profile.nickname) setDirty(true)
-    else if (role !== profile.settings?.role) setDirty(true)
     else if (desc !== profile.description) setDirty(true)
     else setDirty(false)
-  }, [nick, role, desc, profile])
-
-  const roles = Object.entries(Schema.Role).map(pair => pair[1])
+  }, [nick, desc, profile])
 
   return (
     <Body>
@@ -100,20 +94,6 @@ const Profile: React.FunctionComponent<ProfileProps> = ({ profile, userId, onSav
           value={desc}
           onChange={ev => setDesc(ev.currentTarget.value)}
         />
-      </Field>
-
-      <Field name="Role">
-        <select
-          className="select"
-          value={role}
-          onChange={ev => setRole(ev.currentTarget.value as any)}
-        >
-          {roles.map(role => (
-            <option value={role} key={role}>
-              {role}
-            </option>
-          ))}
-        </select>
       </Field>
 
       {canSave && (

@@ -2,6 +2,7 @@ import * as path from 'path'
 import { db } from './client'
 import { logger } from 'svcready'
 import { migrate as evtMigrate } from 'evtstore/provider/knex'
+import { createUsers } from '../api/user/register'
 
 export async function migrate() {
   const config = {
@@ -27,6 +28,8 @@ export async function migrate() {
   }
 
   logger.info(`successfully ensured event store schema`)
+
+  await createUsers()
 }
 
 const eventTables = ['events', 'profile_events', 'post_events']

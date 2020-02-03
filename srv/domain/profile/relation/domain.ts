@@ -1,6 +1,7 @@
 import { createDomain, CommandError } from 'evtstore'
 import { getProvider } from '../../provider'
 import { getUserState } from './state'
+import { Schema } from '../types'
 
 /**
  * - follow
@@ -19,6 +20,26 @@ type Aggregate = {}
 type Command =
   | { type: 'FollowUser'; fromUserId: string; toUserId: string }
   | { type: 'UnfollowUser'; fromUserId: string; toUserId: string }
+
+  /**
+   * user-a    <----> user-b
+   * [brother] <----> [sister]
+   * [friend] <----> [friend]
+   * [sibling] <----> [sibling]
+   */
+  | {
+      type: 'RequestRelation'
+      left: { userId: string; relation: Schema.Relation }
+      right: { userId: string; relation: Schema.Relation }
+    }
+  | { type: 'RejectRelation' }
+  | { type: 'AcceptRelation'; relation: Schema.Relation }
+  | { type: 'RemoveRelation' }
+  | {
+      type: 'UpdateRelation'
+      left?: { userId: string; relation: Schema.Relation }
+      right?: { userId: string; relation: Schema.Relation }
+    }
 
 export const relation = createDomain<Event, Aggregate, Command>(
   {
@@ -44,5 +65,11 @@ export const relation = createDomain<Event, Aggregate, Command>(
 
       return { type: 'UnfollowedUser', toUserId: cmd.toUserId, fromUserId: cmd.fromUserId }
     },
+
+    async RequestRelation(cmd) {},
+    async AcceptRelation(cmd) {},
+    async RejectRelation(cmd) {},
+    async RemoveRelation(cmd) {},
+    async UpdateRelation(cmd) {},
   }
 )

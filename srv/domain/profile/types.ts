@@ -1,5 +1,3 @@
-import { Act } from '../util'
-
 export namespace Schema {
   export interface Profile {
     id: string
@@ -17,47 +15,41 @@ export namespace Schema {
 
   export interface Settings {
     visibility: 'online' | 'offline'
-    role: Role
   }
 
-  export enum Role {
-    SampleRole = 'sample',
-    AnotherRole = 'another',
-    NotSet = 'notset',
+  export enum Relation {
+    Friend = 'friend',
+    Partner = 'partner',
+    Sibling = 'sibling',
+    Parent = 'parent',
+    Child = 'child',
+    Brother = 'brother',
+    Sister = 'sister',
+    Father = 'father',
+    Mother = 'mother',
   }
 }
 
 export namespace Domain {
-  export type ProfileCmd = {
-    type: 'Create'
-  }
+  export type Command = { type: 'Create' } | SingleUpdate
 
-  export type UpdateCmd = SingleUpdate
+  export type Event =
+    | { type: 'ProfileCreated'; userId: string }
+    | { type: 'NicknameUpdated'; name: string }
+    | { type: 'ProfileVerified'; verify: boolean }
+    | { type: 'DescriptionUpdated'; description: string }
 
-  export type ProfileEvent = {
-    type: 'ProfileCreated'
+  export type Aggregate = {
     userId: string
-  }
-
-  export type UpdateEvent =
-    | Act<'NicknameUpdated', { name: string }>
-    | Act<'ProfileVerified', { verify: boolean }>
-    | Act<'RoleUpdated', { role: Schema.Role }>
-    | Act<'DescriptionUpdated', { description: string }>
-
-  export type ProfileAgg = {
-    userId: string
-  }
-
-  export type UpdateAgg = {
-    userId: string
+    nickname: string
+    verified: boolean
+    description: string
   }
 
   export type SingleUpdate =
-    | Act<'UpdateNickname', { name: string }>
-    | Act<'VerifyProfile', { verify: boolean }>
-    | Act<'UpdateRole', { role: Schema.Role }>
-    | Act<'UpdateDescription', { description: string }>
+    | { type: 'UpdateNickname'; name: string }
+    | { type: 'VerifyProfile'; verify: boolean }
+    | { type: 'UpdateDescription'; description: string }
 }
 
 export namespace API {

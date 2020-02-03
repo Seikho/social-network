@@ -17,8 +17,7 @@ export async function start() {
 }
 
 function startPopulators() {
-  profiles.populators.profile.start()
-  profiles.populators.update.start()
+  profiles.populator.start()
   profiles.relations.manager.start()
   profiles.relations.populator.start()
   posts.populator.start()

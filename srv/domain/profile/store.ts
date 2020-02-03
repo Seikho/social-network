@@ -12,7 +12,6 @@ export async function createProfile(id: string) {
     status: '',
     settings: JSON.stringify({
       visibility: 'online',
-      role: Schema.Role.NotSet,
     }) as any,
   })
 }

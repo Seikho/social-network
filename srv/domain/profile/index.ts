@@ -1,14 +1,12 @@
 import { profile } from './profile'
-import { update } from './update'
-import { populators } from './populate'
+import { populator } from './populate'
 import { Domain, Schema } from './types'
 import { relations } from './relation'
 import * as store from './store'
 
 export const profiles = {
-  profile,
-  update,
-  populators,
+  cmd: profile.command,
+  populator,
   store,
   relations,
 }

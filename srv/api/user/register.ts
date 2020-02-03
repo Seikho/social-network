@@ -18,7 +18,7 @@ export const register = handle(async (req, res) => {
 })
 
 async function createUser(username: string, password: string) {
-  await profiles.profile.command.Create(username, {})
+  await profiles.cmd.Create(username, {})
   const hash = await encrypt(password)
   await table.users().insert({ user_id: username, hash })
 }
@@ -26,7 +26,7 @@ async function createUser(username: string, password: string) {
 // TODO: Remove
 
 const users = ['foo', 'bar', 'baz', 'aaa', 'bbb', 'aaabbb', 'bbbccc', 'cccfoo']
-async function createUsers() {
+export async function createUsers() {
   for (const user of users) {
     const existing = await getUser(user)
     if (existing) continue
@@ -35,5 +35,3 @@ async function createUsers() {
     logger.info(`Created ${user}`)
   }
 }
-
-createUsers()

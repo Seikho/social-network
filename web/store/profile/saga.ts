@@ -1,6 +1,5 @@
 import { saga, get, post } from '../store'
 import { Profile } from './reducer'
-import { Schema } from 'srv/domain/profile/types'
 
 saga('PROFILE_REQUEST_SELF', async (_, dispatch) => {
   const res = await get<{ profile: Profile }>(`/profile`)
@@ -54,9 +53,6 @@ saga(
     const nextProfile = { ...profile }
     if (changes.description) nextProfile.description = changes.description
     if (changes.nickname) nextProfile.nickname = changes.nickname
-    if (changes.role && nextProfile.settings) {
-      nextProfile.settings.role = changes.role as Schema.Role
-    }
 
     dispatch({ type: 'PROFILE_RECEIVE_PROFILE', profile: nextProfile })
   }
