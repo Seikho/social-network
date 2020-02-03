@@ -1,4 +1,4 @@
-import { profile } from './profile'
+import { profile } from './domain'
 import { populator } from './populate'
 import { Domain, Schema } from './types'
 import { relations } from './relation'
